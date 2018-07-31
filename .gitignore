@@ -5,6 +5,9 @@
 .*.sw?
 *~
 
+node_modules/
+
+
 # Vagrant stuff
 acceptance_config.yml
 boxes/*

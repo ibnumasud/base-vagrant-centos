@@ -1,0 +1,44 @@
+---
+- hosts: all
+  vars:
+    node_apps_location: /usr/local/opt/node
+
+  tasks:
+    - name: install remi repo.
+      yum:
+        name: "http://rpms.remirepo.net/enterprise/remi-release-7.rpm"
+        state: present
+
+
+    - name: import remi gpg
+      rpm_key:
+          key: "http://rpms.remirepo.net/RPM-GPG-KEY-remi" # required. Key that will be modified. Can be a url, a file, or a keyid if the key already exists in the database.
+          state: present # not required. choices: absent;present. If the key will be imported or removed from the rpm db.
+          validate_certs: yes # not required. If C(no) and the C(key) is a url starting with https, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+    - name: install epel repo
+      yum: name=epel-release state=present
+
+    - name: Install Node.js and npm.
+      yum: name=npm state=present enablerepo=epel
+
+    - name: Install Forever (to run our Node.js app).
+      npm: name=forever global=yes state=present
+
+    - name: Ensure Node.js app folder exists.
+      file: "path={{ node_apps_location }} state=directory"
+
+    - name: Copy example Node.js app to server.
+      copy: "src=app dest={{ node_apps_location }}"
+
+    - name: Install app dependencies defined in package.json.
+      npm: "path={{ node_apps_location }}/app"
+
+    - name: Check list of running Node.js apps.
+      command: forever list
+      register: forever_list
+      changed_when: false
+
+    - name: Start example Node.js app.
+      command: "forever start {{ node_apps_location }}/app/app.js"
+      when: "forever_list.stdout.find(node_apps_location + '/app/app.js') == -1"
