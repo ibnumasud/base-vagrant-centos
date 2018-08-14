@@ -6,12 +6,12 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.define "openstack-packstack" do |openstack-packstack|
+  config.vm.define "openstackPackstack" do |openstackPackstack|
 
-    openstack-packstack.vm.box = "centos/7"
-    openstack-packstack.vm.hostname = "openstack-packstack"
-    openstack-packstack.vm.synced_folder '.', '/vagrant', disabled: true
-    openstack-packstack.vm.network :private_network, ip: "192.168.202.201"
-    # openstack-packstack.vm.provision :shell, path: "provision.sh", keep_color: "true"
+    openstackPackstack.vm.box = "centos/7"
+    openstackPackstack.vm.hostname = "openstackPackstack"
+    openstackPackstack.vm.synced_folder '.', '/vagrant', disabled: true
+    openstackPackstack.vm.network :private_network, ip: "192.168.202.201"
+    # openstackPackstack.vm.provision :shell, path: "provision.sh", keep_color: "true"
   end
 end
