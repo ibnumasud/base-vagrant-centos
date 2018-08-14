@@ -12,6 +12,8 @@ Vagrant.configure("2") do |config|
     openstackPackstack.vm.hostname = "openstackPackstack"
     openstackPackstack.vm.synced_folder '.', '/vagrant', disabled: true
     openstackPackstack.vm.network :private_network, ip: "192.168.202.201"
+    openstackPackstack.vm.network :public_network, auto_config: false
+
     # openstackPackstack.vm.provision :shell, path: "provision.sh", keep_color: "true"
   end
 end
