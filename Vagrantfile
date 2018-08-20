@@ -11,8 +11,14 @@ Vagrant.configure("2") do |config|
     openstackPackstack.vm.box = "centos/7"
     openstackPackstack.vm.hostname = "openstackPackstack"
     openstackPackstack.vm.synced_folder '.', '/vagrant', disabled: true
-    openstackPackstack.vm.network :private_network, ip: "192.168.202.201"
-    openstackPackstack.vm.network :public_network, auto_config: false
+    # openstackPackstack.vm.network :private_network, ip: "192.168.202.201"
+    openstackPackstack.vm.network :public_network, ip: "10.14.3.158"
+
+    openstackPackstack.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", 8192]
+      vb.customize ["modifyvm", :id, "--cpus", 2]
+    end
+
 
     # openstackPackstack.vm.provision :shell, path: "provision.sh", keep_color: "true"
   end
